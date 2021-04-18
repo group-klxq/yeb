@@ -50,6 +50,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         );
     }
 
+    /**
+     * 自定义登录页面
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -57,15 +62,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                //认证
                 .authorizeRequests()
                 // .antMatchers("/login","/logout").permitAll()
+                //权限
                 .anyRequest().authenticated()
                 //禁用缓存
                 .and()
                 .headers()
                 .cacheControl();
 
-        //配置token拦截器
+        //配置JWT登录授权的token拦截器
         http.addFilterBefore(jwtAuthencationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         //添加自定义未授权和未登录结果返回
         http.exceptionHandling()
@@ -75,7 +82,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(restAuthorizationEntryPoint);
     }
 
-
+    /**
+     * 自定义登录逻辑
+     * @return
+     */
     @Override
     @Bean
     protected UserDetailsService userDetailsService() {

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
+/**
+ * 登陆界面
+ */
 @RestController
 @Api(value = "登录")
 public class LoginController {

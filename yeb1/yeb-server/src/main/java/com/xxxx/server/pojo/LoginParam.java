@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+/**
+ * 用户登录实体类
+ */
 @Data
 @ApiModel(value="登录参数对象", description="")
 public class LoginParam {
