@@ -3,7 +3,10 @@ package com.xxxx.server.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xxxx.server.pojo.Admin;
 import com.xxxx.server.pojo.RespBean;
+import com.xxxx.server.pojo.Role;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -30,4 +33,19 @@ public interface IAdminService extends IService<Admin> {
      * @return
      */
     Admin quryAdminByName(String name);
+
+    /**
+     * 通过用户名找到对应的角色
+     * @return
+     */
+    List<Admin> quryRoleByAdmin(Integer id);
+
+
+    /**
+     * 通过用户信息找到对应的角色
+     * @return
+     */
+    List<Role> quryRoles(Integer id);
+
+
 }
