@@ -1,8 +1,15 @@
 package com.xxxx.server.controller;
 
 
+import com.xxxx.server.pojo.Menu;
+import com.xxxx.server.service.impl.MenuServiceImpl;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -13,7 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021-04-16
  */
 @RestController
-@RequestMapping("/menu")
+@RequestMapping("/system")
 public class MenuController {
+
+    @Resource
+    private MenuServiceImpl menuService;
+
+    @ApiOperation(value = "加载当前用户所拥有的资源")
+    @GetMapping("menu")
+    public List<Menu> getMenuByUserName(){
+        return menuService.getMenuByAdminName();
+    }
 
 }

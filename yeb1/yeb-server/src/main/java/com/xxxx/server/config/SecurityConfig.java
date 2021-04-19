@@ -1,10 +1,16 @@
 package com.xxxx.server.config;
 
+import com.xxxx.server.config.compoent.CustomFilter;
+import com.xxxx.server.config.compoent.CustomUrlDecisionManager;
 import com.xxxx.server.config.compoent.JwtAuthencationTokenFilter;
 import com.xxxx.server.controller.LoginController;
 import com.xxxx.server.pojo.Admin;
+import com.xxxx.server.pojo.Role;
+import com.xxxx.server.service.IAdminService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -15,9 +21,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -28,6 +36,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AccessDeniedHandler restfulAccessDeniedHandler;
     @Resource
     private AuthenticationEntryPoint restAuthorizationEntryPoint;
+    @Resource
+    private IAdminService adminService;
+    @Autowired
+    private CustomFilter customFilter;
+    @Autowired
+    private CustomUrlDecisionManager customUrlDecisionManager;
 
     /**
      * 配置放行资源的方式
@@ -57,8 +71,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                //关闭session 不使用
+        //使用JWT，不需要csrf
+        http.csrf()
+                .disable()
+                //基于token，不需要session
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -68,17 +84,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //权限
                 .anyRequest().authenticated()
                 //禁用缓存
+                //所有请求都要求认证
+                .anyRequest()
+                .authenticated()
+                //动态权限配置
+                .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                    @Override
+                    public <O extends FilterSecurityInterceptor> O postProcess(O object) {
+                        object.setAccessDecisionManager(customUrlDecisionManager);
+                        object.setSecurityMetadataSource(customFilter);
+                        return object;
+                    }
+                })
                 .and()
+                //禁用缓存
                 .headers()
                 .cacheControl();
 
         //配置JWT登录授权的token拦截器
+        //添加jwt 登录授权过滤器
         http.addFilterBefore(jwtAuthencationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         //添加自定义未授权和未登录结果返回
         http.exceptionHandling()
-                //权限不足 403
+                //403
                 .accessDeniedHandler(restfulAccessDeniedHandler)
-                //未登录或者token过期，登录异常
+                //403
                 .authenticationEntryPoint(restAuthorizationEntryPoint);
     }
 
@@ -94,6 +124,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             if(admin == null){
                 throw new UsernameNotFoundException("用户名或密码不正确");
             }
+            //查询当前用户角色
+            List<Role> roles = adminService.quryRoles(admin.getId());
+            admin.setRoles(roles);
             return admin;
         };
     }

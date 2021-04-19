@@ -14,4 +14,19 @@ public class HelloController {
     public String hello(){
         return "hello";
     }
+
+
+     @ApiOperation("测试接口2")
+     @RequestMapping("/employee/basic/test")
+     public String hello2(){
+        return "/employee/basic/test";
+     }
+
+
+
+    @ApiOperation("测试接口3")
+    @RequestMapping("/employee/advanced/demo")
+        public String hello3(){
+        return "/employee/advanced/demo";
+    }
 }
