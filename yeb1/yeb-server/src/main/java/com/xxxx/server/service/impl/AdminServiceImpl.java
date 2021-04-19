@@ -7,6 +7,7 @@ import com.xxxx.server.pojo.Admin;
 import com.xxxx.server.pojo.RespBean;
 import com.xxxx.server.pojo.Role;
 import com.xxxx.server.service.IAdminService;
+import com.xxxx.server.utils.AdminUtils;
 import com.xxxx.server.utils.JwtTokenUtil;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Value;
@@ -101,4 +102,10 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     public List<Role> quryRoles(Integer id) {
         return adminMapper.quryRoles(id);
     }
+
+    @Override
+    public List<Admin> getAllAdmins(String keywords) {
+        return adminMapper.getAllAdmins(AdminUtils.getCurrentAdmin().getId(), keywords);
+    }
+
 }
