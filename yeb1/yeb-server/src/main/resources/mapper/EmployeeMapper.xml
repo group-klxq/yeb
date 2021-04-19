@@ -35,9 +35,87 @@
         <result column="salaryId" property="salaryId" />
     </resultMap>
 
+
+    <resultMap id="Employee" type="com.xxxx.server.pojo.Employee" extends="BaseResultMap">
+        <association property="nation" javaType="com.xxxx.server.pojo.Nation">
+            <id column="nId" property="id"></id>
+            <result column="nName" property="name"></result>
+        </association>
+        <association property="politicsStatus" javaType="com.xxxx.server.pojo.PoliticsStatus">
+            <id column="pId" property="id"></id>
+            <result column="pName" property="name"></result>
+        </association>
+        <association property="department" javaType="com.xxxx.server.pojo.Department">
+            <id column="depId" property="id"></id>
+            <result column="depName" property="name"></result>
+        </association>
+        <association property="joblevel" javaType="com.xxxx.server.pojo.Joblevel">
+            <id column="jId" property="id"></id>
+            <result column="jName" property="name"></result>
+        </association>
+        <association property="position" javaType="com.xxxx.server.pojo.Position">
+            <id column="posid" property="id"></id>
+            <result column="posName" property="name"></result>
+        </association>
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, name, gender, birthday, idCard, wedlock, nationId, nativePlace, politicId, email, phone, address, departmentId, jobLevelId, posId, engageForm, tiptopDegree, specialty, school, beginDate, workState, workID, contractTerm, conversionTime, notWorkDate, beginContract, endContract, workAge, salaryId
     </sql>
+    <select id="getEmpByPage" resultMap="Employee">
+        SELECT
+	e.*,
+	n.id nId,
+	n.NAME nName,
+	ps.id pId,
+	ps.NAME pName,
+	dep.id depId,
+	dep.NAME depName,
+	j.id jId,
+	j.NAME jName,
+	pos.id posid,
+	pos.NAME posName
+FROM
+	t_employee e,
+	t_nation n,
+	t_politics_status ps,
+	t_department dep,
+	t_joblevel j,
+	t_position pos
+WHERE
+	e.nationId = n.id
+	AND e.politicId = ps.id
+	AND e.departmentId = dep.id
+	AND e.jobLevelId = j.id
+	AND e.posId = pos.id
+	<if test="employee.name!=null and employee.name!=''">
+        AND e.NAME LIKE CONCAT( "%", #{employee.name}, "%" )
+    </if>
+    <if test="employee.politicId!=null">
+        AND e.politicId =#{employee.politicId}
+    </if>
+    <if test="employee.nationId!=null">
+        AND e.nationId =#{employee.nationId}
+    </if>
+        <if test="employee.departmentId!=null">
+            AND e.departmentId =#{employee.departmentId}
+        </if>
+        <if test="employee.jobLevelId!=null">
+            AND e.jobLevelId =#{employee.jobLevelId}
+        </if>
+        <if test="employee.posId!=null">
+            AND e.posId =#{employee.posId}
+        </if>
+        <if test="employee.engageForm!=null and employee.engageForm!='' ">
+            AND e.engageForm =#{employee.engageForm}
+        </if>
+        <if test="beginDataScope!=null and beginDataScope.length==2">
+            AND e.beginDate BETWEEN #{beginDataScope[0]} and #{beginDataScope[1]}
+        </if>
+        ORDER BY e.id
+
+    </select>
+
 
 </mapper>

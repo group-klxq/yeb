@@ -22,7 +22,7 @@ public class LoginController {
 
     @ApiOperation(value = "登录接口")
     @PostMapping("/login")
-    public RespBean login(LoginParam loginParam){
+    public RespBean login( LoginParam loginParam){
         return adminService.login(loginParam.getUserName(),loginParam.getPassword());
     }
 

@@ -83,10 +83,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // .antMatchers("/login","/logout").permitAll()
                 //权限
                 .anyRequest().authenticated()
-                //禁用缓存
-                //所有请求都要求认证
-                .anyRequest()
-                .authenticated()
                 //动态权限配置
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
