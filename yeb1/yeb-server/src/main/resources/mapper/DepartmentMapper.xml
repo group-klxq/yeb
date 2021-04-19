@@ -11,10 +11,17 @@
         <result column="enabled" property="enabled" />
         <result column="isParent" property="isParent" />
     </resultMap>
-
+    <resultMap id="AllDepartment" type="com.xxxx.server.pojo.Department" extends="BaseResultMap">
+        <collection property="childDepartment" ofType="com.xxxx.server.pojo.Department" select="com.xxxx.server.mapper.DepartmentMapper.queryAllDepartment" column="id"/>
+    </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, name, parentId, depPath, enabled, isParent
     </sql>
-
+    <select id="queryAllDepartment" resultMap="AllDepartment">
+        select
+        <include refid="Base_Column_List"/>
+        from t_department
+        where parentId = #{parentId}
+    </select>
 </mapper>

@@ -3,6 +3,8 @@ package com.xxxx.server.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xxxx.server.pojo.Department;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,6 @@ import com.xxxx.server.pojo.Department;
  */
 public interface IDepartmentService extends IService<Department> {
 
+    //查询所有部门
+    List<Department> queryAllDepartment();
 }
