@@ -42,19 +42,20 @@ public class SalaryController {
         return iSalaryService.selectByName(salary);
     }
 
-    @ApiOperation(value = "添加账套")
-    @PostMapping("/insert")
-    public RespBean insert(Salary salary){
-        iSalaryService.insert(salary);
-        return RespBean.success("添加成功");
+
+    @ApiOperation(value = "添加或者修改")
+    @PostMapping("/addOrUpdate")
+    public RespBean addOrUpdate(Salary salary){
+        if (salary.getId()==null){
+            //添加
+            iSalaryService.insert(salary);
+            return RespBean.success("添加成功");
+        }else {
+            iSalaryService.updateSalary(salary);
+            return RespBean.success("修改成功");
+        }
     }
 
-    @ApiOperation(value = "修改账套")
-    @PostMapping("/update")
-    public RespBean update(Salary salary){
-        iSalaryService.updateSalary(salary);
-        return RespBean.success("修改成功");
-    }
 
     @ApiOperation(value = "删除账套")
     @DeleteMapping("/delete")

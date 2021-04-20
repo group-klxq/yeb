@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xxxx.server.mapper.SalaryMapper;
+import com.xxxx.server.pojo.RespBean;
 import com.xxxx.server.pojo.Salary;
 import com.xxxx.server.service.ISalaryService;
 import com.xxxx.server.utils.AssertUtil;
@@ -57,7 +58,7 @@ public class SalaryServiceImpl extends ServiceImpl<SalaryMapper, Salary> impleme
         int insert = salaryMapper.insert(salary);
         System.out.println(insert);
         System.out.println(salary);
-        AssertUtil.isTrue(insert != 1, "添加失败");
+        AssertUtil.isTrue(insert !=1, "添加失败");
     }
 
     //修改工资账套
@@ -73,7 +74,7 @@ public class SalaryServiceImpl extends ServiceImpl<SalaryMapper, Salary> impleme
         AssertUtil.isTrue(id != null && id != salary.getId(), "部门名已存在，请更换名称");
 
         //执行修改操作
-        AssertUtil.isTrue(salaryMapper.update(salary, null) != 1, "编辑失败");
+        AssertUtil.isTrue(salaryMapper.updateById(salary)!= 1, "编辑失败");
 
     }
 
