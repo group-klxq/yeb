@@ -17,7 +17,7 @@
     </resultMap>
 
     <resultMap id="adminwithrole" type="com.xxxx.server.pojo.Admin" extends="BaseResultMap">
-        <collection property="roles" ofType="com.xxxx.server.pojo.Admin">
+        <collection property="roles" ofType="com.xxxx.server.pojo.Role">
             <id column="rid" property="id"/>
             <result column="rname" property="name"/>
             <result column="rnameZh" property="nameZh"/>
@@ -64,6 +64,27 @@
     </select>
     <select id="quryRoleByAdminID" resultType="com.xxxx.server.pojo.Role">
 
+    </select>
+
+
+    <!--  查询除自己之外的所有操作员信息-->
+    <select id="getAllAdmins" resultMap="adminwithrole">
+        SELECT
+        a.*,
+        r.id     AS rid,
+        r.`name` AS rname,
+        r.nameZh AS rnameZh
+        FROM
+        t_admin a
+        LEFT JOIN t_admin_role ar ON a.id = ar.adminId
+        LEFT JOIN t_role r ON r.id = ar.rid
+        WHERE
+         a.id != #{id}
+        <if test="null!=keywords and ''!=keywords">
+            AND a.`name` LIKE CONCAT( '%', #{keywords} , '%')
+        </if>
+        ORDER BY
+        a.id
     </select>
 
 </mapper>

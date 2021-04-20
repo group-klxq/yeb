@@ -1,6 +1,9 @@
 package com.xxxx.server.pojo;
+
+import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -19,22 +22,29 @@ public class RespBean {
     private Object obj;
 
     //封装成功的返回对象
-    public static RespBean success(String message){
-        return new RespBean(200,message,null);
+    public static RespBean success(String message) {
+        return new RespBean(200, message, null);
     }
 
     //封装成功的返回对象
-    public static RespBean success(String message,Object obj){
-        return new RespBean(200,message,obj);
+    public static RespBean success(String message, Object obj) {
+        return new RespBean(200, message, obj);
     }
 
     //封装失败的返回对象
     public static RespBean error(String message){
         return new RespBean(500,message,null);
+    //封装成功的返回对象
+    public static RespBean error(String message) {
+        return new RespBean(500, message, null);
     }
 
+    //封装成功的返回对象
+    public static RespBean error(String message, Object obj) {
+        return new RespBean(500, message, obj);
     //封装失败的返回对象
     public static RespBean error(String message,Object obj){
         return new RespBean(500,message,obj);
     }
+
 }
