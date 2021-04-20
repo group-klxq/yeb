@@ -21,4 +21,5 @@ public interface AdminMapper extends BaseMapper<Admin> {
 
     //根据ID查询角色
     List<Role> quryRoles(Integer id);
+
 }

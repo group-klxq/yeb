@@ -8,18 +8,18 @@ import com.xxxx.server.pojo.RespBean;
 import com.xxxx.server.pojo.Role;
 import com.xxxx.server.service.IAdminService;
 import com.xxxx.server.utils.JwtTokenUtil;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +47,12 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private AdminMapper adminMapper;
 
     @Override
-    public RespBean login(String username, String password) {
+    public RespBean login(String username, String password, String code, HttpServletRequest request) {
+
+        String captcha = (String) request.getSession().getAttribute("captcha");
+            if (StringUtils.isEmpty(code)||!captcha.equalsIgnoreCase(code)){
+            return RespBean.error("验证失败123");
+        }
         //加载登录对象信息
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if(userDetails == null || !passwordEncoder.matches(password,userDetails.getPassword())){
@@ -63,6 +68,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
+
+
         //准备令牌
         String token = jwtTokenUtil.generateToken(userDetails);
         Map<String, Object> map = new HashMap<>();
@@ -72,14 +79,16 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         return RespBean.success("登录成功",map);
     }
 
+
+
     /**
      * 根据用户名查询对象
-     * @param name
+     * @param
      * @return
      */
     @Override
-    public Admin quryAdminByName(String name) {
-        return adminMapper.selectOne(new QueryWrapper<Admin>().eq("username", name));
+    public Admin quryAdminByName(String username) {
+        return adminMapper.selectOne(new QueryWrapper<Admin>().eq("username", username));
     }
 
     /**
@@ -101,4 +110,5 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     public List<Role> quryRoles(Integer id) {
         return adminMapper.quryRoles(id);
     }
+
 }

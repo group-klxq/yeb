@@ -62,5 +62,8 @@
         and
             ar.adminid = #{id}
     </select>
+    <select id="quryRoleByAdminID" resultType="com.xxxx.server.pojo.Role">
+
+    </select>
 
 </mapper>
