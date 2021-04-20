@@ -64,6 +64,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         );
     }
 
+    /**
+     * 自定义登录页面
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //使用JWT，不需要csrf
@@ -73,10 +78,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                //认证
                 .authorizeRequests()
-                //所有请求都要求认证
-                .anyRequest()
-                .authenticated()
+                // .antMatchers("/login","/logout").permitAll()
+                //权限
+                .anyRequest().authenticated()
                 //动态权限配置
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
@@ -90,6 +96,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //禁用缓存
                 .headers()
                 .cacheControl();
+
+        //配置JWT登录授权的token拦截器
         //添加jwt 登录授权过滤器
         http.addFilterBefore(jwtAuthencationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         //添加自定义未授权和未登录结果返回
@@ -100,7 +108,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(restAuthorizationEntryPoint);
     }
 
-
+    /**
+     * 自定义登录逻辑
+     * @return
+     */
     @Override
     @Bean
     protected UserDetailsService userDetailsService() {

@@ -19,11 +19,14 @@ import java.util.Map;
  */
 @Component
 public class JwtTokenUtil {
-
+    /*用户名的KEY*/
     private static final String CLAIM_KEY_USERNAME = "sub";
+    //JWT的创建时间
     private static final String CLAIM_KEY_CREATED = "created";
+    //JWT的密钥
     @Value("${jwt.secret}")
     private String secret;
+    //JWT的失效时间
     @Value("${jwt.expiration}")
     private Long expiration;
 
@@ -35,6 +38,7 @@ public class JwtTokenUtil {
      * @return
      */
     public String generateToken(UserDetails userDetails) {
+        //准备荷载
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
         claims.put(CLAIM_KEY_CREATED, new Date());
@@ -63,7 +67,7 @@ public class JwtTokenUtil {
      * @param userDetails
      * @return
      */
-    public boolean validateToken(String token,UserDetails userDetails){
+     public boolean validateToken(String token,UserDetails userDetails){
         String username = getUserNameFromToken(token);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
@@ -118,8 +122,11 @@ public class JwtTokenUtil {
         Claims claims = null;
         try {
             claims = Jwts.parser()
+                    //设置签名+密钥
                     .setSigningKey(secret)
+                    //转成荷载的token
                     .parseClaimsJws(token)
+                    //获取JWT的荷载
                     .getBody();
         } catch (Exception e) {
             e.printStackTrace();
@@ -136,9 +143,13 @@ public class JwtTokenUtil {
      */
     private String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
+                //准备荷载
                 .setClaims(claims)
+                //设置令牌的失效时间
                 .setExpiration(generateExpirationDate())
+                //签名+密钥
                 .signWith(SignatureAlgorithm.HS512, secret)
+                //获取JWT的token
                 .compact();
     }
 
