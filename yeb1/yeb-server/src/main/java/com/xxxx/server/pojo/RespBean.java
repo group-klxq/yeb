@@ -7,10 +7,12 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @ApiModel(value="公共的返回对象", description="")
 public class RespBean {
 
