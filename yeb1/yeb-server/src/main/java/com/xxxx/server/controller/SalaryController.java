@@ -60,7 +60,7 @@ public class SalaryController {
     @PostMapping("/")
     public RespBean insert(Salary salary){
         iSalaryService.insert(salary);
-        return RespBean.success("修改成功");
+        return RespBean.success("添加成功");
     }
 
     @ApiOperation(value = "修改账套")
