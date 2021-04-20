@@ -25,5 +25,5 @@ public interface ISalaryService extends IService<Salary> {
     void updateSalary(Salary salary);
 
     //删除工资账套
-    void deleteSalary(Salary salary);
+    void deleteSalary(Integer id);
 }

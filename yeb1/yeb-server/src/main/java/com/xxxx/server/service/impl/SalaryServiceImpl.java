@@ -80,10 +80,11 @@ public class SalaryServiceImpl extends ServiceImpl<SalaryMapper, Salary> impleme
 
     //删除账套
     @Override
-    public void deleteSalary(Salary salary) {
-        AssertUtil.isTrue(salaryMapper.selectById(salary.getId())==null,"待删除项不存在");
-        AssertUtil.isTrue(salary.getId()==null,"待删除项异常，请重试");
-        AssertUtil.isTrue(salaryMapper.deleteById(salary.getId())!=1,"删除失败");
+    public void deleteSalary(Integer id) {
+
+        AssertUtil.isTrue(salaryMapper.selectById(id)==null,"待删除项不存在");
+        AssertUtil.isTrue(id==null,"待删除项异常，请重试");
+        AssertUtil.isTrue(salaryMapper.deleteById(id)<1,"删除失败");
     }
 
 

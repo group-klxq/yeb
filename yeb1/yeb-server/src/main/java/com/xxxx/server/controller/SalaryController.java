@@ -58,22 +58,22 @@ public class SalaryController {
 
     @ApiOperation(value = "添加账套")
     @PostMapping("/")
-    public RespBean insert(Salary salary){
+    public RespBean insert(@RequestBody Salary salary){
         iSalaryService.insert(salary);
         return RespBean.success("添加成功");
     }
 
     @ApiOperation(value = "修改账套")
     @PutMapping("/")
-    public RespBean update(Salary salary){
+    public RespBean update(@RequestBody Salary salary){
         iSalaryService.updateSalary(salary);
         return RespBean.success("修改成功");
     }
 
     @ApiOperation(value = "删除账套")
-    @DeleteMapping("/")
-    public RespBean delete(Salary salary){
-        iSalaryService.deleteSalary(salary);
+    @DeleteMapping("/{id}")
+    public RespBean delete(@PathVariable Integer id){
+        iSalaryService.deleteSalary(id);
         return RespBean.success("删除成功");
     }
 }
