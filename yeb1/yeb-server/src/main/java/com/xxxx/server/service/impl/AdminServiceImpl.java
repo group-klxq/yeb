@@ -20,8 +20,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +55,12 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
 
     @Override
-    public RespBean login(String username, String password) {
+    public RespBean login(String username, String password, String code, HttpServletRequest request) {
+
+        String captcha = (String) request.getSession().getAttribute("captcha");
+            if (StringUtils.isEmpty(code)||!captcha.equalsIgnoreCase(code)){
+            return RespBean.error("验证失败123");
+        }
         //加载登录对象信息
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if(userDetails == null || !passwordEncoder.matches(password,userDetails.getPassword())){
@@ -65,9 +72,11 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
             return RespBean.error("用户状态异常");
         }
 
-        //将用户的基本信息存放在security
+        //将更新之后的用户的基本信息存放在security
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+
 
         //准备令牌
         String token = jwtTokenUtil.generateToken(userDetails);
@@ -78,14 +87,16 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         return RespBean.success("登录成功",map);
     }
 
+
+
     /**
      * 根据用户名查询对象
-     * @param name
+     * @param
      * @return
      */
     @Override
-    public Admin quryAdminByName(String name) {
-        return adminMapper.selectOne(new QueryWrapper<Admin>().eq("username", name));
+    public Admin quryAdminByName(String username) {
+        return adminMapper.selectOne(new QueryWrapper<Admin>().eq("username", username));
     }
 
     /**
@@ -107,6 +118,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     public List<Role> quryRoles(Integer id) {
         return adminMapper.quryRoles(id);
     }
+
 
     //查询所有的操作员信息
     @Override

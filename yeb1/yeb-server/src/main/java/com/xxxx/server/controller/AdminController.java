@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
+import javax.annotation.Resource;
+import java.security.Principal;
+import java.util.List;
+
 /**
  * <p>
  *  前端控制器
@@ -21,7 +25,7 @@ import java.util.List;
  * @since 2021-04-16
  */
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/system/admin")
 public class AdminController {
 
     @Resource
@@ -71,5 +75,13 @@ public class AdminController {
         return adminService.updateAdminRole(adminId,rids);
     }
 
+    @ApiOperation(value = "根据用户名查询对象")
+    @GetMapping("/info")
+    public Admin quryAdminByName(Principal principal) {
+        Admin admin = adminService.quryAdminByName(principal.getName());
+        admin.setPassword(null);
+        List<Role> roles = adminService.quryRoles(admin.getId());
+        admin.setRoles(roles);
+        return admin;
     }
-
+}

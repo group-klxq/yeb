@@ -73,7 +73,7 @@ public class CodeGenerator {
 				"/Shanghai");
 		dsc.setDriverName("com.mysql.cj.jdbc.Driver");
 		dsc.setUsername("root");
-		dsc.setPassword("123456");
+		dsc.setPassword("root");
 		mpg.setDataSource(dsc);
 
 		// 包配置
@@ -121,17 +121,17 @@ public class CodeGenerator {
 
 		// 策略配置
 		StrategyConfig strategy = new StrategyConfig();
-		//数据库表映射到实体的命名策略
+		//数据库表映射到实体的命名策略，转为驼峰命名
 		strategy.setNaming(NamingStrategy.underline_to_camel);
-		//数据库表字段映射到实体的命名策略
+		//数据库表字段映射到实体的命名策略，本身就是驼峰命名，没有下划线因此不需要改变
 		strategy.setColumnNaming(NamingStrategy.no_change);
 		//lombok模型
 		strategy.setEntityLombokModel(true);
-		//生成 @RestController 控制器
+		//生成 @RestController 控制器，因为我们是前后端分离的项目，直接返回的就是json，因此给了该注解
 		strategy.setRestControllerStyle(true);
 		strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
 		strategy.setControllerMappingHyphenStyle(true);
-		//表前缀
+		//表前缀，生成的时候可以把t_下划线省略掉
 		strategy.setTablePrefix("t_");
 		mpg.setStrategy(strategy);
 		mpg.setTemplateEngine(new FreemarkerTemplateEngine());

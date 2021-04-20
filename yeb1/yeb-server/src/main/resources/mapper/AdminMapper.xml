@@ -62,6 +62,9 @@
         and
             ar.adminid = #{id}
     </select>
+    <select id="quryRoleByAdminID" resultType="com.xxxx.server.pojo.Role">
+
+    </select>
 
 
     <!--  查询除自己之外的所有操作员信息-->
