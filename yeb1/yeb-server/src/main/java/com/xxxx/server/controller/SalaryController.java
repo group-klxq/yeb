@@ -23,7 +23,7 @@ import java.util.Map;
  * @since 2021-04-16
  */
 @RestController
-@RequestMapping("/salary")
+@RequestMapping("/salary/sob")
 @Api(value = "工资账套")
 public class SalaryController {
 
@@ -31,34 +31,47 @@ public class SalaryController {
     private ISalaryService iSalaryService;
 
     @ApiOperation(value = "所有人员的工资账套")
-    @GetMapping("/allSalary")
+    @GetMapping("/")
     public List<Salary> sal(){
         return iSalaryService.list();
     }
 
-    @ApiOperation(value = "根据部门名查询")
-    @GetMapping("/select")
-    public List<Salary> selectByName(Salary salary){
-        return iSalaryService.selectByName(salary);
+//    @ApiOperation(value = "根据部门名查询")
+//    @GetMapping("/select")
+//    public List<Salary> selectByName(Salary salary){
+//        return iSalaryService.selectByName(salary);
+//    }
+
+
+//    @ApiOperation(value = "添加或者修改")
+//    @PostMapping("/addOrUpdate")
+//    public RespBean addOrUpdate(Salary salary){
+//        if (salary.getId()==null){
+//            //添加
+//            iSalaryService.insert(salary);
+//            return RespBean.success("添加成功");
+//        }else {
+//            iSalaryService.updateSalary(salary);
+//            return RespBean.success("修改成功");
+//        }
+//    }
+
+    @ApiOperation(value = "添加账套")
+    @PostMapping("/")
+    public RespBean insert(Salary salary){
+        iSalaryService.insert(salary);
+        return RespBean.success("修改成功");
     }
 
-
-    @ApiOperation(value = "添加或者修改")
-    @PostMapping("/addOrUpdate")
-    public RespBean addOrUpdate(Salary salary){
-        if (salary.getId()==null){
-            //添加
-            iSalaryService.insert(salary);
-            return RespBean.success("添加成功");
-        }else {
-            iSalaryService.updateSalary(salary);
-            return RespBean.success("修改成功");
-        }
+    @ApiOperation(value = "修改账套")
+    @PutMapping("/")
+    public RespBean update(Salary salary){
+        iSalaryService.updateSalary(salary);
+        return RespBean.success("修改成功");
     }
-
 
     @ApiOperation(value = "删除账套")
-    @DeleteMapping("/delete")
+    @DeleteMapping("/")
     public RespBean delete(Salary salary){
         iSalaryService.deleteSalary(salary);
         return RespBean.success("删除成功");
