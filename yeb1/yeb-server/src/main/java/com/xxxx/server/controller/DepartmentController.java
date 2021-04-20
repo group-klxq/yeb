@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2021-04-16
  */
 @RestController
-@RequestMapping("/department")
+@RequestMapping("/system/basic/department/")
 public class DepartmentController {
     @Resource
     private IDepartmentService departmentService;
@@ -30,7 +30,7 @@ public class DepartmentController {
      *
      * @return
      */
-    @GetMapping("queryAllDepartment")
+    @GetMapping("/")
     @ApiOperation(value = "查询所有的部门")
     public List<Department> queryAllDepartment() {
         return departmentService.queryAllDepartment();
@@ -54,14 +54,14 @@ public class DepartmentController {
      * 层级-grade
      */
     @ApiOperation(value = "添加部门")
-    @PostMapping("insertDepartment")
+    @PostMapping("/")
     public RespBean insertDepartment(@RequestBody Department department){
         return departmentService.insertDepartment(department);
     }
 
 
     @ApiOperation(value = "删除部门")
-    @DeleteMapping("deleteDepartment/{id}")
+    @DeleteMapping("/{id}")
     public RespBean deleteDepartment(Integer id){
         return departmentService.deleteDepartment(id);
     }

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("permission")
+@RequestMapping("/system/basic/permiss")
 public class PermissionController {
 
     @Resource
@@ -29,13 +29,13 @@ public class PermissionController {
     private IMenuRoleService menuRoleService;
 
     @ApiOperation(value = "查询所有的角色")
-    @GetMapping("queryAllRole")
+    @GetMapping("/")
     public List<Role> queryAllRole(){
         return roleService.list();
     }
 
     @ApiOperation(value = "添加角色")
-    @PostMapping("insertRole")
+    @PostMapping("/role")
     public RespBean insertRole(@RequestBody Role role){
         if (!role.getName().startsWith("ROLE_")){
             role.setName("Role_"+role.getName());
@@ -47,7 +47,7 @@ public class PermissionController {
     }
 
     @ApiOperation(value = "删除角色")
-    @DeleteMapping("deleteRole/{rid}")
+    @DeleteMapping("role/{rid}")
     public RespBean deleteRole(@PathVariable Integer rid){
         if (roleService.removeById(rid)){
             return RespBean.success("删除成功");
@@ -56,13 +56,13 @@ public class PermissionController {
     }
 
     @ApiOperation(value = "查询所有的菜单")
-    @GetMapping("queryAllMenu")
+    @GetMapping("menus")
     public List<Menu> queryAllMenu(){
         return menuService.queryAllMenu();
     }
 
     @ApiOperation(value = "根据角色ID查询拥有的菜单ID")
-    @GetMapping("queryMenuByRoleId/{rid}")
+    @GetMapping("/{rid}")
     public List<Integer> queryMenuByRoleId(@PathVariable Integer rid){
         return menuRoleService.list(new QueryWrapper<MenuRole>()
                 .eq("rid",rid))
@@ -72,7 +72,7 @@ public class PermissionController {
     }
 
     @ApiOperation(value = "更新角色菜单")
-    @PutMapping("updateRoleMenus")
+    @PutMapping("/")
     public RespBean updateRoleMenus(Integer rid,Integer[] mids){
         return menuRoleService.updateRoleMenus(rid,mids);
     }

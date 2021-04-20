@@ -23,19 +23,19 @@ import java.util.List;
  * @since 2021-04-16
  */
 @RestController
-@RequestMapping("/position")
+@RequestMapping("/system/basic/pos")
 public class PositionController {
     @Resource
     private IPositionService positionService;
 
     @ApiOperation(value = "查询所有的职位")
-    @GetMapping("queryAllPosition")
+    @GetMapping("/")
     public List<Position> queryAllPosition(){
         return positionService.list();
     }
 
     @ApiOperation(value = "添加职位")
-    @PostMapping("insertPosition")
+    @PostMapping("/")
     public RespBean insertPosition(@RequestBody Position position){
         position.setCreateDate(LocalDateTime.now());
         if (positionService.save(position)){
@@ -45,7 +45,7 @@ public class PositionController {
     }
 
     @ApiOperation(value = "更新职位")
-    @PutMapping("updatePosition")
+    @PutMapping("/")
     public RespBean updatePosition(@RequestBody Position position){
         if (positionService.updateById(position)){
             return RespBean.success("更新成功");
@@ -54,7 +54,7 @@ public class PositionController {
     }
 
     @ApiOperation(value = "删除职位")
-    @DeleteMapping("deletePosition/{id}")
+    @DeleteMapping("/{id}")
     public RespBean deletePosition(@PathVariable Integer id){
         if (positionService.removeById(id)){
             return RespBean.success("删除成功");
@@ -63,7 +63,7 @@ public class PositionController {
     }
 
     @ApiOperation(value = "批量删除职位")
-    @DeleteMapping("deletePositions")
+    @DeleteMapping("/")
     public RespBean deletePositions(Integer[] ids){
         if (positionService.removeByIds(Arrays.asList(ids))){
             return RespBean.success("批量删除成功");
