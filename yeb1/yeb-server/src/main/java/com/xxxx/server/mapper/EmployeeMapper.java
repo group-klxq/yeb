@@ -19,4 +19,5 @@ import java.util.List;
 public interface EmployeeMapper extends BaseMapper<Employee> {
 
     IPage getEmpByPage(Page<Employee> page, Employee employee, LocalDate[] beginDataScope);
+
 }

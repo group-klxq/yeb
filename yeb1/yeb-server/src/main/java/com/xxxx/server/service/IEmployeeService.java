@@ -2,11 +2,10 @@ package com.xxxx.server.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xxxx.server.pojo.Employee;
+import com.xxxx.server.pojo.RespBean;
 import com.xxxx.server.pojo.RespPageBean;
-import com.xxxx.server.query.PageQueryParams;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * <p>
@@ -20,4 +19,9 @@ public interface IEmployeeService extends IService<Employee> {
 
 
     RespPageBean getEmpByPage(Employee employee, LocalDate[] beginDataScope);
+
+    RespBean addEmp(Employee employee);
+
+
+    RespBean getMaxWorkId();
 }
