@@ -76,11 +76,4 @@ public class SalaryController {
         iSalaryService.deleteSalary(salary);
         return RespBean.success("删除成功");
     }
-
-
-
-
-
-
-
 }
