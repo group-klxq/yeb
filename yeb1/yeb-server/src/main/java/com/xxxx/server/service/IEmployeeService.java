@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public interface IEmployeeService extends IService<Employee> {
 
 
-    RespPageBean getEmpByPage(Employee employee, LocalDate[] beginDataScope);
+    RespPageBean getEmpByPage(Integer currentPage, Integer size,Employee employee, LocalDate[] beginDataScope);
 
     RespBean addEmp(Employee employee);
 

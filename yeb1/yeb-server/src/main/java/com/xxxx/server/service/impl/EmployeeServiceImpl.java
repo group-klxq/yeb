@@ -43,8 +43,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
 
     @Override
-    public RespPageBean getEmpByPage(Employee employee, LocalDate[] beginDataScope) {
-        Page<Employee> page=new Page<>(1,10);
+    public RespPageBean getEmpByPage(Integer currentPage,Integer size,Employee employee, LocalDate[] beginDataScope) {
+        Page<Employee> page=new Page<>(currentPage,size);
         IPage empByPage = employeeMapper.getEmpByPage(page, employee,beginDataScope);
         RespPageBean respPageBean=new RespPageBean(empByPage.getTotal(),empByPage.getRecords());
         return respPageBean;
@@ -65,10 +65,11 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
         //校验
         checkData(employee);
-        if (employeeMapper.insert(employee)!=1){
-            return RespBean.error("员工信息添加失败");
+        if (employeeMapper.insert(employee)==1){
+            return RespBean.success("员工信息添加成功");
+
         }
-        return RespBean.success("员工信息添加成功");
+        return RespBean.error("员工信息添加失败");
     }
 
     @Override
