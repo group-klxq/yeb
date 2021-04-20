@@ -12,10 +12,11 @@ import com.xxxx.server.pojo.RespBean;
 import com.xxxx.server.service.impl.RoleServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
+
+
 import javax.annotation.Resource;
 import java.util.List;
 
-import java.security.Principal;
 
 /**
  * <p>
@@ -26,7 +27,7 @@ import java.security.Principal;
  * @since 2021-04-16
  */
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/system/admin")
 public class AdminController {
 
     @Resource
@@ -89,3 +90,13 @@ public class AdminController {
 
 
 
+    @ApiOperation(value = "根据用户名查询对象")
+    @GetMapping("/info")
+    public Admin quryAdminByName(Principal principal) {
+        Admin admin = adminService.quryAdminByName(principal.getName());
+        admin.setPassword(null);
+        List<Role> roles = adminService.quryRoles(admin.getId());
+        admin.setRoles(roles);
+        return admin;
+    }
+}

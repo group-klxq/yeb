@@ -20,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +55,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private AdminRoleMapper adminRoleMapper;
 
 
+
     @Override
     public RespBean login(String username, String password, String code, HttpServletRequest request) {
 
@@ -77,6 +79,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
 
+
         //准备令牌
         String token = jwtTokenUtil.generateToken(userDetails);
         Map<String, Object> map = new HashMap<>();
@@ -85,6 +88,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         map.put("token", token);
         return RespBean.success("登录成功", map);
     }
+
 
 
     /**
@@ -119,6 +123,12 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         return adminMapper.quryRoles(id);
     }
 
+
+    //查询所有的操作员信息
+    @Override
+    public List<Admin> getAllAdmins(String keywords) {
+        return adminMapper.getAllAdmins(AdminUtils.getCurrentAdmin().getId(), keywords);
+    }
 
     @Override
     @Transactional
