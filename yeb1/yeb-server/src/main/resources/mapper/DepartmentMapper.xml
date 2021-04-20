@@ -11,10 +11,47 @@
         <result column="enabled" property="enabled" />
         <result column="isParent" property="isParent" />
     </resultMap>
-
+    <!--    查询所有部门-->
+    <resultMap id="AllDepartment" type="com.xxxx.server.pojo.Department" extends="BaseResultMap">
+        <collection property="childDepartment" ofType="com.xxxx.server.pojo.Department" select="com.xxxx.server.mapper.DepartmentMapper.queryAllDepartment" column="id"/>
+    </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, name, parentId, depPath, enabled, isParent
     </sql>
+<!--    删除部门-->
+    <delete id="deleteDepartment" parameterType="int">
+        delete from t_department where id=#{id}
+    </delete>
+    <!--    添加部门-->
+<!--    <select id="insertDepartment" statementType="CALLABLE" >-->
+<!--        call insertDepartment(#{name,mode=IN,jdbcType=VARCHAR},#{parentId,mode=IN,jdbcType=INTEGER},-->
+<!--        #{enabled,mode=IN,jdbcType=BOOLEAN},#{result,mode=OUT,jdbcType=INTEGER},#{id,mode=OUT,jdbcType=INTEGER})-->
+<!--    </select>-->
 
+    <!--    查询所有部门-->
+    <select id="queryAllDepartment" resultMap="AllDepartment">
+        select
+        <include refid="Base_Column_List"/>
+        from t_department
+        where parentId = #{parentId}
+    </select>
+<!--    查询当前部门拥有的子部门-->
+    <select id="queryDepartmentByParentId" resultType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+            t_department
+        where
+            parentId = #{id}
+    </select>
+<!--    根据部门名查询部门信息-->
+    <select id="queryDepartmentByName" resultType="com.xxxx.server.pojo.Department">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        t_department
+        where
+            name=#{name}
+    </select>
 </mapper>

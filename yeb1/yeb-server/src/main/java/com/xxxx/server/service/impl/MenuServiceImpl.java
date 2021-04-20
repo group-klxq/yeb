@@ -26,6 +26,15 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     @Resource
     private MenuMapper menuMapper;
 
+    /**
+     * 查询所有的权限
+     * @return
+     */
+    @Override
+    public List<Menu> queryAllMenu() {
+        return menuMapper.queryAllMenu();
+    }
+
     //根据登录用户名查询拥有的权限
     @Override
     public List<Menu> getMenuByAdminName() {

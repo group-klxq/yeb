@@ -27,6 +27,7 @@ public interface IAdminService extends IService<Admin> {
      * @param code
      * @param username
      * @param password
+     * @param
      * @param request
      * @return
      */
