@@ -1,5 +1,6 @@
 package com.xxxx.server.controller;
 
+import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.xxxx.server.pojo.Admin;
 import com.xxxx.server.pojo.LoginParam;
 import com.xxxx.server.pojo.RespBean;
@@ -9,6 +10,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 @RestController
 @Api(value = "登录")
@@ -36,4 +40,7 @@ public class LoginController {
     public Admin quryAdminByName(String name){
         return adminService.quryAdminByName(name);
     }
+
+
+
 }

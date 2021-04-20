@@ -6,6 +6,7 @@ import com.xxxx.server.pojo.RespBean;
 import com.xxxx.server.pojo.Role;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ public interface IAdminService extends IService<Admin> {
      * 登录
      * @param username
      * @param password
+     * @param
      * @return
      */
     RespBean login(String username, String password);
