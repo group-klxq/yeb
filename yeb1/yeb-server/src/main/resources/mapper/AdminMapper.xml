@@ -78,7 +78,7 @@
         WHERE
          a.id != #{id}
         <if test="null!=keywords and ''!=keywords">
-            AND a.`name` LIKE CONCAT( '%', #{keywords}, '%');
+            AND a.`name` LIKE CONCAT( '%', #{keywords} , '%')
         </if>
         ORDER BY
         a.id

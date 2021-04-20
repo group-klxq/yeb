@@ -6,10 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Generated;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -54,7 +51,7 @@ public class Admin implements Serializable , UserDetails {
     private String address;
 
     @ApiModelProperty(value = "是否启用")
-    @Generated
+    @Getter(AccessLevel.NONE)
     private Boolean enabled;
 
     @ApiModelProperty(value = "用户名")
