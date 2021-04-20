@@ -9,7 +9,6 @@ import com.xxxx.server.pojo.AdminRole;
 import com.xxxx.server.pojo.RespBean;
 import com.xxxx.server.pojo.Role;
 import com.xxxx.server.service.IAdminService;
-import com.xxxx.server.utils.AdminUtils;
 import com.xxxx.server.utils.JwtTokenUtil;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +31,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author shi
@@ -55,22 +54,21 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private AdminRoleMapper adminRoleMapper;
 
 
-
     @Override
     public RespBean login(String username, String password, String code, HttpServletRequest request) {
 
         String captcha = (String) request.getSession().getAttribute("captcha");
-            if (StringUtils.isEmpty(code)||!captcha.equalsIgnoreCase(code)){
+        if (StringUtils.isEmpty(code) || !captcha.equalsIgnoreCase(code)) {
             return RespBean.error("验证失败123");
         }
         //加载登录对象信息
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        if(userDetails == null || !passwordEncoder.matches(password,userDetails.getPassword())){
+        if (userDetails == null || !passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new UsernameNotFoundException("用户名和密码异常");
         }
 
         //判断当前对象是否可用
-        if(!userDetails.isEnabled()){
+        if (!userDetails.isEnabled()) {
             return RespBean.error("用户状态异常");
         }
 
@@ -79,20 +77,19 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
 
-
         //准备令牌
         String token = jwtTokenUtil.generateToken(userDetails);
         Map<String, Object> map = new HashMap<>();
         System.out.println(tokenHead);
-        map.put("tokenHead",tokenHead);
-        map.put("token",token);
-        return RespBean.success("登录成功",map);
+        map.put("tokenHead", tokenHead);
+        map.put("token", token);
+        return RespBean.success("登录成功", map);
     }
-
 
 
     /**
      * 根据用户名查询对象
+     *
      * @param
      * @return
      */
@@ -103,6 +100,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
     /**
      * 根据用户信息查询对应角色
+     *
      * @return
      */
     @Override
@@ -121,11 +119,6 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         return adminMapper.quryRoles(id);
     }
 
-    //查询所有的操作员信息
-    @Override
-    public List<Admin> getAllAdmins(String keywords) {
-        return adminMapper.getAllAdmins(AdminUtils.getCurrentAdmin().getId(), keywords);
-    }
 
     @Override
     @Transactional

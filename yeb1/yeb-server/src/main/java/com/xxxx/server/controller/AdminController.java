@@ -4,26 +4,18 @@ package com.xxxx.server.controller;
 import com.xxxx.server.pojo.Admin;
 import com.xxxx.server.pojo.Role;
 import com.xxxx.server.service.IAdminService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.xxxx.server.pojo.Admin;
 import com.xxxx.server.pojo.RespBean;
-import com.xxxx.server.pojo.Role;
-import com.xxxx.server.service.IAdminService;
 import com.xxxx.server.service.impl.RoleServiceImpl;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
 
-import javax.annotation.Resource;
 import java.security.Principal;
-import java.util.List;
 
 /**
  * <p>
@@ -54,11 +46,7 @@ public class AdminController {
     private RoleServiceImpl roleService;
 
 
-    @ApiOperation(value = "获取所有操作员")
-    @GetMapping("/")
-    public List<Admin> getAllAdmins(String keywords) {
-        return adminService.getAllAdmins(keywords);
-    }
+
 
     @ApiOperation(value = "更新操作员")
     @PutMapping("/")
