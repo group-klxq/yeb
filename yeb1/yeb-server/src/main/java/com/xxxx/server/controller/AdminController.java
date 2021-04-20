@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author shi
@@ -49,9 +49,7 @@ public class AdminController {
         admin.setRoles(roles);
         return admin;
     }
-}
-    @Resource
-    private IAdminService adminService;
+
     @Resource
     private RoleServiceImpl roleService;
 
@@ -60,7 +58,7 @@ public class AdminController {
     @GetMapping("/")
     public List<Admin> getAllAdmins(String keywords) {
         return adminService.getAllAdmins(keywords);
-        }
+    }
 
     @ApiOperation(value = "更新操作员")
     @PutMapping("/")
@@ -79,23 +77,27 @@ public class AdminController {
         }
         return RespBean.error("删除失败！");
     }
+
     /**
-     *   1.查询所有的角色
-     *   2.查询操作员所携带的角色
-     *   3.更新操作员的角色
+     * 1.查询所有的角色
+     * 2.查询操作员所携带的角色
+     * 3.更新操作员的角色
      */
 
     @ApiOperation(value = "获取所有角色")
     @GetMapping("/roles")
-    public List<Role>getRoles(){
+    public List<Role> getRoles() {
         return roleService.list();
     }
 
     @ApiOperation(value = "更新操作员的角色")
     @PutMapping("/role")
-    public RespBean updateAdminRole(Integer adminId,Integer[] rids){
-        return adminService.updateAdminRole(adminId,rids);
+    public RespBean updateAdminRole(Integer adminId, Integer[] rids) {
+        return adminService.updateAdminRole(adminId, rids);
     }
 
-    }
+}
+
+
+
 
