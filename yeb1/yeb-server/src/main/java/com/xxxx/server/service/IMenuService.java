@@ -17,12 +17,16 @@ import java.util.List;
 public interface IMenuService extends IService<Menu> {
 
     //根据登录用户名查询拥有的权限
-    List<Menu> getMenuByAdminName();
+//    List<Menu> getMenuByAdminName();
+
+    List<Menu> getMenusByAdminId();
 
     //根据当前资源，查询可使用他的角色
     List<Menu> getRoleByMenuId();
 
     //查询所有菜单
     List<Menu> getAllMenus();
+
+
 
 }

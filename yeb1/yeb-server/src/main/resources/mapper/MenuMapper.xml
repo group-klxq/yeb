@@ -60,7 +60,7 @@
 
 
     <!-- 根据用户id查询菜单列表  -->
-    <select id="getMenuByAdminId" resultMap="Menus">
+    <select id="getMenusByAdminId" resultMap="Menus">
         SELECT DISTINCT
             m1.*,
             m2.id AS id2,

@@ -27,9 +27,9 @@ public class MenuController {
     private MenuServiceImpl menuService;
 
     @ApiOperation(value = "加载当前用户所拥有的资源")
-    @GetMapping("menu")
-    public List<Menu> getMenuByUserName(){
-        return menuService.getMenuByAdminName();
+    @GetMapping("/menu")
+    public List<Menu> getMenusByAdminId(){
+        return menuService.getMenusByAdminId();
     }
 
 }
