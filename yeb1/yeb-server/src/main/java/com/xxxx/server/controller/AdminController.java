@@ -13,8 +13,8 @@ import com.xxxx.server.service.impl.RoleServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 
-
 import javax.annotation.Resource;
+import java.security.Principal;
 import java.util.List;
 
 
@@ -33,20 +33,8 @@ public class AdminController {
     @Resource
     private IAdminService adminService;
 
-    @ApiOperation(value = "根据用户名查询对象")
-    @GetMapping("/info")
-    public Admin quryAdminByName(Principal principal) {
-        Admin admin = adminService.quryAdminByName(principal.getName());
-        admin.setPassword(null);
-        List<Role> roles = adminService.quryRoles(admin.getId());
-        admin.setRoles(roles);
-        return admin;
-    }
-
     @Resource
     private RoleServiceImpl roleService;
-
-
 
 
     @ApiOperation(value = "更新操作员")
@@ -85,18 +73,10 @@ public class AdminController {
         return adminService.updateAdminRole(adminId, rids);
     }
 
-}
-
-
-
-
-    @ApiOperation(value = "根据用户名查询对象")
-    @GetMapping("/info")
-    public Admin quryAdminByName(Principal principal) {
-        Admin admin = adminService.quryAdminByName(principal.getName());
-        admin.setPassword(null);
-        List<Role> roles = adminService.quryRoles(admin.getId());
-        admin.setRoles(roles);
-        return admin;
+    @ApiOperation(value = "获取所有操作员")
+    @GetMapping("/")
+    public List<Admin> getAllAdmins(String keywords) {
+        return adminService.getAllAdmins(keywords);
     }
 }
+

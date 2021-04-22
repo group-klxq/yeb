@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/yeb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
-    password: 123456
+    password: root
 
     hikari:
       # 连接池名
@@ -27,7 +27,11 @@ spring:
       connection-timeout: 30000
       # 测试连接是否可用的查询语句
       connection-test-query: SELECT 1
-
+  rabbitmq:
+    username: guest
+    password: guest
+    host: 192.168.121.11
+    port: 5672
 # Mybatis-plus配置
 mybatis-plus:
   #配置Mapper映射文件

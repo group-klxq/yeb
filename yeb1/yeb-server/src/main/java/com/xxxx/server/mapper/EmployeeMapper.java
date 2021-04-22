@@ -20,4 +20,10 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
 
     IPage getEmpByPage(Page<Employee> page, Employee employee, LocalDate[] beginDataScope);
 
+    void insertList(List<Employee> employeeList);
+
+
+    List<Employee> getEmp(Integer id);
+
+    Integer insertEmp(List<Employee> employeeList);
 }

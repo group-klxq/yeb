@@ -19,12 +19,11 @@ public interface IDepartmentService extends IService<Department> {
     //查询所有部门
     List<Department> queryAllDepartment();
 
-//    //添加部门
-//    RespBean insertDepartment(Department department);
-
     //删除部门
     RespBean deleteDepartment(Integer id);
 
     //添加部门
     RespBean insertDepartment(Department department);
+
+    List<Department> selectAllDepartment();
 }

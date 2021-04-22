@@ -63,6 +63,42 @@
     <sql id="Base_Column_List">
         id, name, gender, birthday, idCard, wedlock, nationId, nativePlace, politicId, email, phone, address, departmentId, jobLevelId, posId, engageForm, tiptopDegree, specialty, school, beginDate, workState, workID, contractTerm, conversionTime, notWorkDate, beginContract, endContract, workAge, salaryId
     </sql>
+    <insert id="insertList" parameterType="list">
+
+    </insert>
+    <insert id="insertEmp" parameterType="list">
+        insert into t_employee( name, gender, birthday, idCard, wedlock, nationId, nativePlace, politicId, email, phone, address, departmentId, jobLevelId, posId, engageForm, tiptopDegree, specialty, school, beginDate, workState, workID, contractTerm, conversionTime, notWorkDate, beginContract, endContract, workAge )
+        values
+        <foreach collection="list" item="employee" separator=",">
+            #{employee.name},
+            #{employee.gender},
+            #{employee.birthday},
+            #{employee.idCard},
+            #{employee.wedlock},
+            #{employee.nationId},
+            #{employee.nativePlace},
+            #{employee.politicId},
+            #{employee.email},
+            #{employee.phone},
+            #{employee.address},
+            #{employee.departmentId},
+            #{employee.jobLevelId},
+            #{employee.posId},
+            #{employee.engageForm},
+            #{employee.tiptopDegree},
+            #{employee.specialty},
+            #{employee.school},
+            #{employee.beginDate},
+            #{employee.workState},
+            #{employee.workID},
+            #{employee.contractTerm},
+            #{employee.conversionTime},
+            #{employee.notWorkDate},
+            #{employee.beginContract},
+            #{employee.endContract},
+            #{employee.workAge}
+        </foreach>
+    </insert>
 
     <select id="getEmpByPage" resultMap="Employee">
         SELECT
@@ -116,6 +152,38 @@ WHERE
         </if>
         ORDER BY e.id
 
+    </select>
+    <select id="getEmp" parameterType="int" resultMap="Employee">
+         SELECT
+            e.*,
+            n.id nId,
+            n.NAME nName,
+            ps.id pId,
+            ps.NAME pName,
+            dep.id depId,
+            dep.NAME depName,
+            j.id jId,
+            j.NAME jName,
+            pos.id posid,
+            pos.NAME posName
+        FROM
+            t_employee e,
+            t_nation n,
+            t_politics_status ps,
+            t_department dep,
+            t_joblevel j,
+            t_position pos
+        WHERE
+            e.nationId = n.id
+        AND e.politicId = ps.id
+        AND e.departmentId = dep.id
+        AND e.jobLevelId = j.id
+        AND e.posId = pos.id
+        <if test="id!=null">
+            e.id=#{id}
+        </if>
+
+        ORDER BY e.id
     </select>
 
 

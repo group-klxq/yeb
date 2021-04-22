@@ -9,6 +9,7 @@ import com.xxxx.server.pojo.AdminRole;
 import com.xxxx.server.pojo.RespBean;
 import com.xxxx.server.pojo.Role;
 import com.xxxx.server.service.IAdminService;
+import com.xxxx.server.utils.AdminUtils;
 import com.xxxx.server.utils.JwtTokenUtil;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,7 +56,6 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private AdminRoleMapper adminRoleMapper;
 
 
-
     @Override
     public RespBean login(String username, String password, String code, HttpServletRequest request) {
 
@@ -79,7 +79,6 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
 
-
         //准备令牌
         String token = jwtTokenUtil.generateToken(userDetails);
         Map<String, Object> map = new HashMap<>();
@@ -88,7 +87,6 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         map.put("token", token);
         return RespBean.success("登录成功", map);
     }
-
 
 
     /**

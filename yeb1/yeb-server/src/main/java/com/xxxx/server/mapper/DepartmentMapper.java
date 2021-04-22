@@ -19,12 +19,14 @@ public interface DepartmentMapper extends BaseMapper<Department> {
     //查询所有的部门
     List<Department> queryAllDepartment(Integer parentId);
 
-//    //添加部门
-//    void insertDepartment(Department department);
+    //添加部门
+    void insertDepartment(Department department);
 
     List<Map<String,Object>> queryDepartmentByParentId(Integer id);
     //根据部门删除部门
     Integer deleteDepartment(Integer id);
     //根据部门名查询部门信息
     List<Department> queryDepartmentByName(String name);
+
+    List<Department> selectAllDepartment();
 }

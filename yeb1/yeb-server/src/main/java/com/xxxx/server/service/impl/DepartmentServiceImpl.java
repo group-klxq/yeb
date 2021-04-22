@@ -35,20 +35,6 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
              return departmentMapper.queryAllDepartment(-1);
         }
 
-    /**
-     * 添加部门
-     * @param department
-     * @return
-     */
-//    @Override
-//    public RespBean insertDepartment(Department department) {
-//        department.setEnabled(true);
-//        departmentMapper.insertDepartment(department);
-//        if (1==department.getResult()){
-//            return RespBean.success("添加成功",department);
-//        }
-//        return RespBean.error("添加失败");
-//    }
 
     /**
      * 删除部门
@@ -90,6 +76,11 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
         department.setEnabled(true);
         departmentMapper.insert(department);
         return null;
+    }
+
+    @Override
+    public List<Department> selectAllDepartment() {
+        return departmentMapper.selectAllDepartment();
     }
 
 

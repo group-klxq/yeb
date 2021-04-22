@@ -1,6 +1,11 @@
 package com.xxxx.server.service.impl;
 
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
+import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -12,10 +17,18 @@ import com.xxxx.server.pojo.RespPageBean;
 import com.xxxx.server.service.IEmployeeService;
 import com.xxxx.server.utils.CheckIdCard;
 import com.xxxx.server.utils.PhoneFormatCheckUtils;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,6 +54,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     @Resource
     private EmployeeMapper employeeMapper;
 
+    @Resource
+    private RabbitTemplate rabbitTemplate;
 
     @Override
     public RespPageBean getEmpByPage(Integer currentPage,Integer size,Employee employee, LocalDate[] beginDataScope) {
@@ -66,6 +81,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         //校验
         checkData(employee);
         if (employeeMapper.insert(employee)==1){
+            Employee emp = employeeMapper.getEmp(employee.getId()).get(0);
+            rabbitTemplate.convertAndSend("mail.welcome",emp);
             return RespBean.success("员工信息添加成功");
 
         }
@@ -79,6 +96,55 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         List<Map<String, Object>> maps = employeeMapper.selectMaps(wrapper);
         String s = String.valueOf(Integer.parseInt(maps.get(0).get("MAX(workID)").toString()) + 1);
         return RespBean.success(null,s);
+    }
+
+    @Override
+    public void exportExcel(HttpServletResponse response) {
+        //获取数据库数据
+        List<Employee> employeeList = employeeMapper.getEmp(null);
+        employeeList.forEach(System.out::println);
+//        employeeList.forEach(employee->System.out.println(employee));
+        //生成Excel文件
+        Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("员工表", "员工列表", ExcelType.HSSF),
+                Employee.class, employeeList);
+
+
+        //通过输出流输出文件
+        try {
+            response.setCharacterEncoding("UTF-8");
+            response.setHeader("content-Type", "application/octet-stream");
+            response.setHeader("Content-Disposition",
+                    "attachment;filename=" + URLEncoder.encode("员工表.xls","utf-8"));
+            ServletOutputStream out = response.getOutputStream();
+            workbook.write(out);
+            out.flush();
+            out.close();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void importExcel(MultipartFile file) {
+
+        //将excel文件中的数据放入List中
+        try {
+            List<Employee> employeeList = ExcelImportUtil.importExcel(file.getInputStream(), Employee.class, new ImportParams());
+
+            employeeList.forEach(employee->System.out.println(employee));
+            employeeMapper.insertList(employeeList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //将数据放入数据库
+
+    }
+
+    @Override
+    public Integer insertEmp(List<Employee> employeeList) {
+        return employeeMapper.insertEmp(employeeList);
     }
 
     private void checkData(Employee employee) {

@@ -19,15 +19,16 @@
     <sql id="Base_Column_List">
         id, name, parentId, depPath, enabled, isParent
     </sql>
-<!--    删除部门-->
+
+    <!--    删除部门-->
     <delete id="deleteDepartment" parameterType="int">
         delete from t_department where id=#{id}
     </delete>
     <!--    添加部门-->
-<!--    <select id="insertDepartment" statementType="CALLABLE" >-->
-<!--        call insertDepartment(#{name,mode=IN,jdbcType=VARCHAR},#{parentId,mode=IN,jdbcType=INTEGER},-->
-<!--        #{enabled,mode=IN,jdbcType=BOOLEAN},#{result,mode=OUT,jdbcType=INTEGER},#{id,mode=OUT,jdbcType=INTEGER})-->
-<!--    </select>-->
+    <select id="insertDepartment" statementType="CALLABLE" >
+        call insertDepartment(#{name,mode=IN,jdbcType=VARCHAR},#{parentId,mode=IN,jdbcType=INTEGER},
+        #{enabled,mode=IN,jdbcType=BOOLEAN},#{result,mode=OUT,jdbcType=INTEGER},#{id,mode=OUT,jdbcType=INTEGER})
+    </select>
 
     <!--    查询所有部门-->
     <select id="queryAllDepartment" resultMap="AllDepartment">
@@ -53,5 +54,10 @@
         t_department
         where
             name=#{name}
+    </select>
+    <select id="selectAllDepartment"  resultType="com.xxxx.server.pojo.Department">
+        select
+        id, name, parentId, depPath, enabled, isParent
+        from t_department
     </select>
 </mapper>
