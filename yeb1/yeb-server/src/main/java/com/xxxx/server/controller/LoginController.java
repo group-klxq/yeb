@@ -7,6 +7,8 @@ import com.xxxx.server.service.IAdminService;
 import com.xxxx.server.utils.VerificationCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,12 +24,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 登陆界面
+ * @author WYG
  */
 @RestController
 @Api(value = "登录")
@@ -85,8 +89,4 @@ public class LoginController {
         outputStream.flush();
     }
 
-
-
-
 }
-

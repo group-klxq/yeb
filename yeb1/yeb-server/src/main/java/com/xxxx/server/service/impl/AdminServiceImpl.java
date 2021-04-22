@@ -56,6 +56,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private AdminRoleMapper adminRoleMapper;
 
 
+
     @Override
     public RespBean login(String username, String password, String code, HttpServletRequest request) {
 
@@ -79,6 +80,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
 
+
         //准备令牌
         String token = jwtTokenUtil.generateToken(userDetails);
         Map<String, Object> map = new HashMap<>();
@@ -87,6 +89,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         map.put("token", token);
         return RespBean.success("登录成功", map);
     }
+
 
 
     /**
@@ -138,5 +141,4 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         }
         return RespBean.error("更新失败");
     }
-
 }

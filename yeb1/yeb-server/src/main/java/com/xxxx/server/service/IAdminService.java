@@ -54,6 +54,11 @@ public interface IAdminService extends IService<Admin> {
 
 
 
+    /**
+     * 获取所有操作员
+     * @return
+     */
+    List<Admin> getAllAdmins(String keywords);
 
     /**
      * 更新操作员角色

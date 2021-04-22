@@ -80,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 //认证
                 .authorizeRequests()
-                // .antMatchers("/login","/logout").permitAll()
+                .antMatchers("/login","/logout").permitAll()
                 //权限
                 .anyRequest().authenticated()
                 //动态权限配置
