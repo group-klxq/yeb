@@ -36,25 +36,6 @@ public class SalaryController {
         return iSalaryService.list();
     }
 
-//    @ApiOperation(value = "根据部门名查询")
-//    @GetMapping("/select")
-//    public List<Salary> selectByName(Salary salary){
-//        return iSalaryService.selectByName(salary);
-//    }
-
-
-//    @ApiOperation(value = "添加或者修改")
-//    @PostMapping("/addOrUpdate")
-//    public RespBean addOrUpdate(Salary salary){
-//        if (salary.getId()==null){
-//            //添加
-//            iSalaryService.insert(salary);
-//            return RespBean.success("添加成功");
-//        }else {
-//            iSalaryService.updateSalary(salary);
-//            return RespBean.success("修改成功");
-//        }
-//    }
 
     @ApiOperation(value = "添加账套")
     @PostMapping("/")

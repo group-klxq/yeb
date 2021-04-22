@@ -54,8 +54,8 @@ public class Department implements Serializable {
     private Boolean isParent;
 
     @ApiModelProperty(value = "子部门菜单")
-//    @TableField(exist = false)
-    private List<Department> childDepartment;
+    @TableField(exist = false)
+    private List<Department> children;
 
     @ApiModelProperty(value = "返回结果,存储过程")
     @TableField(exist = false)

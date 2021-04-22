@@ -13,7 +13,7 @@
     </resultMap>
     <!--    查询所有部门-->
     <resultMap id="AllDepartment" type="com.xxxx.server.pojo.Department" extends="BaseResultMap">
-        <collection property="childDepartment" ofType="com.xxxx.server.pojo.Department" select="com.xxxx.server.mapper.DepartmentMapper.queryAllDepartment" column="id"/>
+        <collection property="children" ofType="com.xxxx.server.pojo.Department" select="com.xxxx.server.mapper.DepartmentMapper.queryAllDepartment" column="id"/>
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">

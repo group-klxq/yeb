@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2021-04-16
  */
 @RestController
-@RequestMapping("/system/basic/department/")
+@RequestMapping("/system/basic")
 public class DepartmentController {
     @Resource
     private IDepartmentService departmentService;
@@ -30,17 +30,14 @@ public class DepartmentController {
      *
      * @return
      */
-    @GetMapping("/")
+    @GetMapping("/department")
     @ApiOperation(value = "查询所有的部门")
     public List<Department> queryAllDepartment() {
-        return departmentService.queryAllDepartment();
+        List<Department> departments = departmentService.queryAllDepartment();
+        departments.forEach(System.out::println);
+        return departments;
     }
 
-//    @ApiOperation(value = "添加部门")
-//    @PostMapping("insertDepartment")
-//    public RespBean insertDepartment(@RequestBody Department department){
-//        return departmentService.insertDepartment(department);
-//    }
 
     /**
      * 1.参数校验
@@ -54,14 +51,14 @@ public class DepartmentController {
      * 层级-grade
      */
     @ApiOperation(value = "添加部门")
-    @PostMapping("/")
+    @PostMapping("/department")
     public RespBean insertDepartment(@RequestBody Department department){
         return departmentService.insertDepartment(department);
     }
 
 
     @ApiOperation(value = "删除部门")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/department/{id}")
     public RespBean deleteDepartment(Integer id){
         return departmentService.deleteDepartment(id);
     }
