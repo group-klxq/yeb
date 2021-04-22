@@ -17,6 +17,11 @@ import java.util.List;
  * @since 2021-04-16
  */
 public interface EmployeeMapper extends BaseMapper<Employee> {
+    /**
+     * 获取员工账套
+     * @param page
+     * @return
+     */
 
     IPage getEmpByPage(Page<Employee> page, Employee employee, LocalDate[] beginDataScope);
 
@@ -26,4 +31,5 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
     List<Employee> getEmp(Integer id);
 
     Integer insertEmp(List<Employee> employeeList);
+    IPage<Employee> getEmployeeWithSalary(Page<Employee> page);
 }
