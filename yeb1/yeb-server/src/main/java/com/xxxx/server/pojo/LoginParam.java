@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 
 /**
  * 用户登录实体类
+ * @author WYG
  */
 @Data
 @ApiModel(value="登录参数对象", description="")

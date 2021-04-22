@@ -13,4 +13,5 @@ import com.xxxx.server.pojo.MenuRole;
  */
 public interface MenuRoleMapper extends BaseMapper<MenuRole> {
 
+    Integer insertRecord(Integer rid, Integer[] mids);
 }

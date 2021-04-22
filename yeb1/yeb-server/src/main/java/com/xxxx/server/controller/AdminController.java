@@ -1,20 +1,20 @@
 package com.xxxx.server.controller;
 
 
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.xxxx.server.pojo.Admin;
 import com.xxxx.server.pojo.RespBean;
 import com.xxxx.server.pojo.Role;
 import com.xxxx.server.service.IAdminService;
 import com.xxxx.server.service.impl.RoleServiceImpl;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.List;
+
 
 /**
  * <p>
@@ -25,7 +25,6 @@ import java.util.List;
  * @since 2021-04-16
  */
 @RestController
-@RequestMapping("/system/admin")
 public class AdminController {
 
     @Resource
@@ -35,27 +34,33 @@ public class AdminController {
 
 
     @ApiOperation(value = "获取所有操作员")
-    @GetMapping("/")
+    @GetMapping("/system/admin")
     public List<Admin> getAllAdmins(String keywords) {
         return adminService.getAllAdmins(keywords);
         }
 
     @ApiOperation(value = "更新操作员")
-    @PutMapping("/")
+    @PutMapping("/system/admin")
     public RespBean updateAdmin(@RequestBody Admin admin) {
-        if (adminService.updateById(admin)) {
-            return RespBean.success("更新成功！");
+            if (adminService.updateById(admin)) {
+                return RespBean.success("更新成功！");
+            }
+            return RespBean.error("更新失败！");
         }
-        return RespBean.error("更新失败！");
-    }
 
+    /**
+     只有系统管理员才能删除操作员
+     */
     @ApiOperation(value = "删除操作员")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/system/admin/{id}")
     public RespBean deleteAdmin(@PathVariable Integer id) {
-        if (adminService.removeById(id)) {
-            return RespBean.success("删除成功！");
+        if (id == 1) {
+            if (adminService.removeById(id)) {
+                return RespBean.success("删除成功！");
+            }
+            return RespBean.error("删除失败！");
         }
-        return RespBean.error("删除失败！");
+        return RespBean.error("非常抱歉，您没有删除权限");
     }
     /**
      *   1.查询所有的角色
@@ -64,19 +69,22 @@ public class AdminController {
      */
 
     @ApiOperation(value = "获取所有角色")
-    @GetMapping("/roles")
+    @GetMapping("/system/admin/roles")
     public List<Role>getRoles(){
         return roleService.list();
     }
 
     @ApiOperation(value = "更新操作员的角色")
-    @PutMapping("/role")
-    public RespBean updateAdminRole(Integer adminId,Integer[] rids){
-        return adminService.updateAdminRole(adminId,rids);
+    @PutMapping("/system/admin/role")
+    public RespBean updateAdminRole(Integer adminId,Integer[] rids) {
+        if ( rids != null) {
+            return adminService.updateAdminRole(adminId, rids);
+        }
+        return RespBean.error("操作员角色不能为空");
     }
 
     @ApiOperation(value = "根据用户名查询对象")
-    @GetMapping("/info")
+    @GetMapping("admin/info")
     public Admin quryAdminByName(Principal principal) {
         Admin admin = adminService.quryAdminByName(principal.getName());
         admin.setPassword(null);

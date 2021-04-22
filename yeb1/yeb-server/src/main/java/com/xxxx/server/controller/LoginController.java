@@ -4,6 +4,7 @@ package com.xxxx.server.controller;
 import com.xxxx.server.pojo.Admin;
 import com.xxxx.server.pojo.LoginParam;
 import com.xxxx.server.pojo.RespBean;
+import com.xxxx.server.pojo.Role;
 import com.xxxx.server.service.IAdminService;
 import com.xxxx.server.utils.VerificationCode;
 import io.swagger.annotations.Api;
@@ -19,11 +20,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * 登陆界面
+ * @author WYG
  */
 @RestController
 @Api(value = "登录")
@@ -52,6 +56,7 @@ public class LoginController {
     public Admin quryAdminByName(String username) {
         return adminService.quryAdminByName(username);
     }
+
 
 
     /**
