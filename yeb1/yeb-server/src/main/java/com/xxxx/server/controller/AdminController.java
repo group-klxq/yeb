@@ -4,6 +4,7 @@ package com.xxxx.server.controller;
 import com.xxxx.server.pojo.Admin;
 import com.xxxx.server.pojo.Role;
 import com.xxxx.server.service.IAdminService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,13 +21,14 @@ import java.util.List;
 
 /**
  * <p>
- * 前端控制器
+ *  前端控制器
  * </p>
  *
  * @author shi
  * @since 2021-04-16
  */
 @RestController
+@Api(value = "操作员管理")
 @RequestMapping("/system/admin")
 public class AdminController {
 
