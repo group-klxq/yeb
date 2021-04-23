@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-class MyBatisPlusConfig extends Page {
+public class MyBatisPlusConfig extends Page {
 
     //自动分页
     @Bean
