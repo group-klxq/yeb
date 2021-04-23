@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.deser.std.DateDeserializers;
 import com.xxxx.server.config.CustomAuthorityDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.xxxx.server.config.CustomAuthorityDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.xxxx.server.config.CostomAuthorityDeserializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -80,6 +82,7 @@ public class Admin implements Serializable , UserDetails {
 
 
     @Override
+    @JsonDeserialize(using = CostomAuthorityDeserializer.class)
     @JsonDeserialize(using= CustomAuthorityDeserializer.class)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = roles

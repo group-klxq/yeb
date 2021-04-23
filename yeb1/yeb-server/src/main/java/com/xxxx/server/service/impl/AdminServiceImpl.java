@@ -20,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author shi
@@ -55,7 +56,6 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private AdminMapper adminMapper;
     @Resource
     private AdminRoleMapper adminRoleMapper;
-
 
 
     @Override
@@ -81,7 +81,6 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
 
-
         //准备令牌
         String token = jwtTokenUtil.generateToken(userDetails);
         Map<String, Object> map = new HashMap<>();
@@ -95,6 +94,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
     /**
      * 根据用户名查询对象
+     *
      * @param
      * @return
      */
@@ -147,6 +147,34 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         return adminMapper.getAllAdmins(AdminUtils.getCurrentAdmin().getId(), keywords);
     }
 
+    /**
+     * 更新用户密码
+     * @param oldPass
+     * @param pass
+     * @param adminId
+     * @return
+     */
+    @Transactional
+    @Override
+    public RespBean updateAdminPassword(String oldPass, String pass, Integer adminId) {
+        Admin admin = adminMapper.selectById(adminId);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (encoder.matches(oldPass,admin.getPassword())){
+            admin.setPassword(encoder.encode(pass));
+            int result = adminMapper.updateById(admin);
+            if(1 == result){
+                return RespBean.success("密码修改成功");
+            }
+        }
+        return RespBean.error("密码修改失败");
+    }
+
+    /**
+     * 个人信息修改
+     * @param adminId
+     * @param rids
+     * @return
+     */
     @Override
     @Transactional
     public RespBean updateAdminRole(Integer adminId, Integer[] rids) {
@@ -157,4 +185,5 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         }
         return RespBean.error("更新失败");
     }
+
 }

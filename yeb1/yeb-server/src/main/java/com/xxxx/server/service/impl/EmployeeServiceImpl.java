@@ -10,16 +10,23 @@ import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xxxx.server.mapper.EmployeeMapper;
 import com.xxxx.server.mapper.MailLogMapper;
 import com.xxxx.server.pojo.*;
+import com.xxxx.server.pojo.Employee;
+import com.xxxx.server.pojo.RespBean;
+import com.xxxx.server.pojo.RespPageBean;
+import com.xxxx.server.pojo.RespPageBean;
 import com.xxxx.server.service.IEmployeeService;
 import com.xxxx.server.utils.CheckIdCard;
 import com.xxxx.server.utils.PhoneFormatCheckUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,9 +37,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Resource;
+
 
 /**
  * <p>
@@ -46,7 +63,23 @@ import java.util.Map;
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements IEmployeeService {
 
     @Resource
-    private EmployeeMapper employeeMapper;
+   private EmployeeMapper employeeMapper;
+
+    /**
+     * 获取所有员工账套
+     * @param currentPage
+     * @param size
+     * @return
+     */
+    @Override
+    public RespPageBean getEmployeeWithSalary(Integer currentPage, Integer size) {
+        //开启分页
+        Page<Employee> page = new Page<>(currentPage, size);
+        IPage<Employee>employeeIPage =employeeMapper.getEmployeeWithSalary(page);
+        RespPageBean respPageBean = new RespPageBean(employeeIPage.getTotal(),employeeIPage.getRecords());
+        return respPageBean;
+    }
+
 
     @Resource
     private RabbitTemplate rabbitTemplate;

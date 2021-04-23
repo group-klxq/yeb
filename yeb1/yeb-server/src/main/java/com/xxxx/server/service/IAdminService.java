@@ -38,7 +38,17 @@ public interface IAdminService extends IService<Admin> {
      * 通过用户名返回查询对象
      * @return
      */
-    Admin quryAdminByName(String username);
+    Admin quryAdminByName(String name);
+
+    /**
+     * 更新用户密码
+     * @param oldPass
+     * @param pass
+     * @param adminId
+     * @return
+     */
+
+    RespBean updateAdminPassword(String oldPass, String pass, Integer adminId);
 
     /**
      * 通过用户名找到对应的角色

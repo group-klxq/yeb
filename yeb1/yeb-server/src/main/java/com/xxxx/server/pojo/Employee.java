@@ -89,7 +89,6 @@ public class Employee implements Serializable {
     private Integer posId;
 
     @ApiModelProperty(value = "聘用形式")
-    @Excel(name = "聘用形式")
     private String engageForm;
 
     @ApiModelProperty(value = "最高学历")
@@ -147,6 +146,10 @@ public class Employee implements Serializable {
 
     @ApiModelProperty(value = "工资账套ID")
     private Integer salaryId;
+
+    @ApiModelProperty(value = "工资账套")
+    @TableField(exist = false)
+    private Salary salary;
 
     @ApiModelProperty(value = "民族")
     @TableField(exist = false)
