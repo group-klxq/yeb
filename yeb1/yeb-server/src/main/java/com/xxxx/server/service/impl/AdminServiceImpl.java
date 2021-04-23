@@ -14,6 +14,7 @@ import com.xxxx.server.utils.JwtTokenUtil;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,7 +34,7 @@ import java.util.Map;
 
 /**
  * <p>
- * 服务实现类
+ *  服务实现类
  * </p>
  *
  * @author shi
@@ -94,7 +95,6 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
     /**
      * 根据用户名查询对象
-     *
      * @param
      * @return
      */
@@ -122,6 +122,22 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public List<Role> quryRoles(Integer id) {
         return adminMapper.quryRoles(id);
+    }
+
+    //更换头像
+    @Override
+    public RespBean updateAdminUserFace(String url, Integer id, Authentication authentication) {
+        Admin admin = adminMapper.selectById(id);
+        admin.setUserFace(url);
+        int result = adminMapper.updateById(admin);
+        if(1==result){
+            Admin principal = (Admin) authentication.getPrincipal();
+            principal.setUserFace(url);
+            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(admin,null,authentication.getAuthorities()));
+            return RespBean.success("更新成功",url);
+        }
+
+        return RespBean.error("更新失败");
     }
 
 

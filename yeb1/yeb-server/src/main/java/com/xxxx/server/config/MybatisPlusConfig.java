@@ -1,16 +1,31 @@
 package com.xxxx.server.config;
 
+import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * 分页配置
+ */
 @Configuration
-public class MyBatisPlusConfig extends Page {
+public class MybatisPlusConfig {
 
-    //自动分页
+    // 旧版
     @Bean
     public PaginationInterceptor paginationInterceptor() {
-        return new PaginationInterceptor();
+        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
+        return paginationInterceptor;
     }
+    
+//    // 最新版
+//    @Bean
+//    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+//        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+//        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.H2));
+//        return interceptor;
+//    }
+    
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.xxxx.server.pojo.Admin;
 import com.xxxx.server.pojo.RespBean;
 import com.xxxx.server.pojo.Role;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,6 +59,10 @@ public interface IAdminService extends IService<Admin> {
      * @return
      */
     List<Admin> getAllAdmins(String keywords);
+    //修改头像
+    RespBean updateAdminUserFace(String url, Integer id, Authentication authentication);
+
+
 
     /**
      * 更新操作员角色
@@ -65,4 +70,6 @@ public interface IAdminService extends IService<Admin> {
      */
     RespBean updateAdminRole(Integer adminId, Integer[] rids);
 
+
+    List<Admin> getAllAdmins(String keywords);
 }
