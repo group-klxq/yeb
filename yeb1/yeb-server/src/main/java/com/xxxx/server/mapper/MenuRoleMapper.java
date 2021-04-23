@@ -15,5 +15,4 @@ public interface MenuRoleMapper extends BaseMapper<MenuRole> {
 
     //批量更新
     Integer insertRecord(Integer rid, Integer[] mids);
-    Integer insertRecord(Integer rid, Integer[] mids);
 }

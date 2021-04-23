@@ -1,4 +1,5 @@
 package com.xxxx.server.service.impl;
+import java.time.LocalDateTime;
 
 
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
@@ -11,13 +12,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xxxx.server.mapper.EmployeeMapper;
-import com.xxxx.server.pojo.Employee;
-import com.xxxx.server.pojo.RespBean;
-import com.xxxx.server.pojo.RespPageBean;
+import com.xxxx.server.mapper.MailLogMapper;
+import com.xxxx.server.pojo.*;
 import com.xxxx.server.service.IEmployeeService;
 import com.xxxx.server.utils.CheckIdCard;
 import com.xxxx.server.utils.PhoneFormatCheckUtils;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -39,6 +40,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * <p>
@@ -56,6 +58,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
     @Resource
     private RabbitTemplate rabbitTemplate;
+    @Resource
+    private MailLogMapper mailLogMapper;
+
 
     @Override
     public RespPageBean getEmpByPage(Integer currentPage,Integer size,Employee employee, LocalDate[] beginDataScope) {
@@ -80,9 +85,25 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
         //校验
         checkData(employee);
+        //发送消息
+        Employee emp = employeeMapper.getEmp(employee.getId()).get(0);
         if (employeeMapper.insert(employee)==1){
-            Employee emp = employeeMapper.getEmp(employee.getId()).get(0);
-            rabbitTemplate.convertAndSend("mail.welcome",emp);
+            //数据库记录发送的消息
+//            String msgId = UUID.randomUUID().toString();
+            String msgId="123456";
+            MailLog mailLog=new MailLog();
+            mailLog.setMsgId(msgId);
+            mailLog.setEid(employee.getId());
+            mailLog.setStatus(0);
+            mailLog.setRouteKey(MailContext.MAIL_ROUTING_KEY_NAME);
+            mailLog.setExchange(MailContext.MAIL_EXCHANGE_NAME);
+            mailLog.setCount(0);
+            mailLog.setTryTime(LocalDateTime.now().plusMinutes(MailContext.MSG_TIMEOUT));
+            mailLog.setCreateTime(LocalDateTime.now());
+            mailLog.setUpdateTime(LocalDateTime.now());
+            mailLogMapper.insert(mailLog);
+
+            rabbitTemplate.convertAndSend(MailContext.MAIL_EXCHANGE_NAME,MailContext.MAIL_ROUTING_KEY_NAME,emp,new CorrelationData(msgId));
             return RespBean.success("员工信息添加成功");
 
         }

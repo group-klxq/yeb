@@ -32,6 +32,11 @@ spring:
     password: guest
     host: 192.168.121.11
     port: 5672
+#    消息确认回调
+    publisher-confirm-type: correlated
+#    消息失败回调
+    publisher-returns: false
+
 # Mybatis-plus配置
 mybatis-plus:
   #配置Mapper映射文件

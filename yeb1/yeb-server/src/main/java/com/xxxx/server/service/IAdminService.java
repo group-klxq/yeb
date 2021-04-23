@@ -53,7 +53,6 @@ public interface IAdminService extends IService<Admin> {
     List<Role> quryRoles(Integer id);
 
 
-
     /**
      * 获取所有操作员
      * @return
@@ -66,6 +65,4 @@ public interface IAdminService extends IService<Admin> {
      */
     RespBean updateAdminRole(Integer adminId, Integer[] rids);
 
-
-    List<Admin> getAllAdmins(String keywords);
 }

@@ -42,8 +42,6 @@ public class MenuRoleServiceImpl extends ServiceImpl<MenuRoleMapper, MenuRole> i
         menuRoleMapper.insertRecord(rid,mids);
         return null;
     }
-    @Resource
-    private MenuRoleMapper menuRoleMapper;
 
     @Override
     @Transactional

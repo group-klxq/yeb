@@ -179,10 +179,9 @@ WHERE
         AND e.departmentId = dep.id
         AND e.jobLevelId = j.id
         AND e.posId = pos.id
-        <if test="id!=null">
-            e.id=#{id}
+        <if test="null!=id">
+        and e.id=#{id}
         </if>
-
         ORDER BY e.id
     </select>
 
