@@ -88,15 +88,11 @@ public class AdminController {
     @ApiOperation(value = "更新操作员的角色")
     @PutMapping("/role")
     public RespBean updateAdminRole(Integer adminId,Integer[] rids) {
-        if ( rids != null) {
+        if (rids != null) {
             return adminService.updateAdminRole(adminId, rids);
         }
         return RespBean.error("操作员角色不能为空");
 
-    @ApiOperation(value = "获取所有操作员")
-    @GetMapping("/")
-    public List<Admin> getAllAdmins(String keywords) {
-        return adminService.getAllAdmins(keywords);
     }
 
 }
