@@ -1,27 +1,29 @@
 package com.xxxx.server.controller;
 
+import com.xxxx.server.pojo.Admin;
 import com.xxxx.server.pojo.RespBean;
 import com.xxxx.server.service.IAdminService;
 import com.xxxx.server.utils.PictureUtil;
 import com.xxxx.server.utils.QiniuUtils;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 public class AdminInfoController {
 
     @Resource
     private IAdminService adminService;
-
-
+    @Resource
+    private IAdminService iAdminService;
     //上传头像,可用
     @ApiOperation(value = "上传头像")
     @PostMapping("/admin/userface")
@@ -36,24 +38,9 @@ public class AdminInfoController {
         return RespBean.error("修改失败");
     }
 
-import com.xxxx.server.pojo.Admin;
-import com.xxxx.server.pojo.RespBean;
-import com.xxxx.server.service.IAdminService;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import javax.annotation.Resource;
-import java.util.Map;
 
 
-@RestController
-public class AdminInfoController {
-    @Resource
-    private IAdminService iAdminService;
+
 
     @ApiOperation(value = "更新当前用户信息")
     @PutMapping("/admin/info")
@@ -70,7 +57,7 @@ public class AdminInfoController {
 
     @ApiOperation(value = "更新用户密码")
     @PutMapping("/admin/pass")
-    public RespBean updateAdminPassword(@RequestBody Map<String,Object>info){
+    public RespBean updateAdminPassword(@RequestBody Map<String,Object> info){
         String oldPass = (String)info.get("oldPass");
         String pass = (String)info.get("pass");
         Integer adminId = (Integer)info.get("adminId");

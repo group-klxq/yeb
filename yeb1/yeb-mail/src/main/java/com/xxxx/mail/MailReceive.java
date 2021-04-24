@@ -37,6 +37,7 @@ public class MailReceive {
     private RedisTemplate redisTemplate;
     @RabbitListener(queues = MailContext.MAIL_QUEUE_NAME)
     public void handler(Message message, Channel channel){
+        System.out.println(message);
         Employee employee = (Employee) message.getPayload();
         MessageHeaders headers = message.getHeaders();
         //消息序列

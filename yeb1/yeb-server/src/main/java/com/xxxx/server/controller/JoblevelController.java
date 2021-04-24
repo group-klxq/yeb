@@ -33,7 +33,7 @@ public class JoblevelController {
     }
 
     @ApiOperation(value = "添加职称")
-    @PutMapping("/  ")
+    @PostMapping("/")
     public RespBean insertJoblevel(@RequestBody Joblevel joblevel){
         joblevel.setCreateDate(LocalDateTime.now());
         if (joblevelService.save(joblevel)){
@@ -43,7 +43,7 @@ public class JoblevelController {
     }
 
     @ApiOperation(value = "更新职称")
-    @DeleteMapping("/")
+    @PutMapping("/")
     public RespBean updateJoblevel(@RequestBody Joblevel joblevel){
         if (joblevelService.updateById(joblevel)){
             return RespBean.success("更新成功");
@@ -61,7 +61,7 @@ public class JoblevelController {
     }
 
     @ApiOperation(value = "批量删除职称")
-    @PostMapping("/")
+    @DeleteMapping("/")
     public RespBean deleteJoblevels(Integer[] ids){
         if (joblevelService.removeByIds(Arrays.asList(ids))){
             return RespBean.success("批量删除成功");

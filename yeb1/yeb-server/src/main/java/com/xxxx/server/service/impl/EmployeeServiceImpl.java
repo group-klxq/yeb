@@ -47,6 +47,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -110,12 +111,10 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
         //校验
         checkData(employee);
-        //发送消息
-        Employee emp = employeeMapper.getEmp(employee.getId()).get(0);
         if (employeeMapper.insert(employee)==1){
             //数据库记录发送的消息
-//            String msgId = UUID.randomUUID().toString();
-            String msgId="123456";
+            String msgId = UUID.randomUUID().toString();
+//            String msgId="123456";
             MailLog mailLog=new MailLog();
             mailLog.setMsgId(msgId);
             mailLog.setEid(employee.getId());
@@ -128,7 +127,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             mailLog.setUpdateTime(LocalDateTime.now());
             mailLogMapper.insert(mailLog);
 
-            rabbitTemplate.convertAndSend(MailContext.MAIL_EXCHANGE_NAME,MailContext.MAIL_ROUTING_KEY_NAME,emp,new CorrelationData(msgId));
+            rabbitTemplate.convertAndSend(MailContext.MAIL_EXCHANGE_NAME,MailContext.MAIL_ROUTING_KEY_NAME,employee,new CorrelationData(msgId));
             return RespBean.success("员工信息添加成功");
 
         }

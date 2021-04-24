@@ -62,15 +62,12 @@ public class AdminController {
     @ApiOperation(value = "删除操作员")
     @DeleteMapping("/{id}")
     public RespBean deleteAdmin(@PathVariable Integer id) {
-        if (id == 1) {
+
             if (adminService.removeById(id)) {
                 return RespBean.success("删除成功！");
             }
             return RespBean.error("删除失败！");
         }
-        return RespBean.error("非常抱歉，您没有删除权限");
-    }
-
     /**
      * 1.查询所有的角色
      * 2.查询操作员所携带的角色

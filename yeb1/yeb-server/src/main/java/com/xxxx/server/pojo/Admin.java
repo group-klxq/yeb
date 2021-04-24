@@ -82,7 +82,6 @@ public class Admin implements Serializable , UserDetails {
 
 
     @Override
-    @JsonDeserialize(using = CostomAuthorityDeserializer.class)
     @JsonDeserialize(using= CustomAuthorityDeserializer.class)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = roles

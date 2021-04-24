@@ -24,7 +24,5 @@ public interface IMenuService extends IService<Menu> {
     //查询所有菜单
     List<Menu> queryAllMenu();
 
-    //查询所有菜单
-    List<Menu> getAllMenus();
 
 }

@@ -23,6 +23,5 @@ public interface MenuMapper extends BaseMapper<Menu> {
     //查询所有的菜单
     List<Menu> queryAllMenu();
 
-    List<Menu> getAllMenus();
 
 }

@@ -47,7 +47,7 @@ public class PermissionController {
     }
 
     @ApiOperation(value = "删除角色")
-    @DeleteMapping("role/{rid}")
+    @DeleteMapping("/role/{rid}")
     public RespBean deleteRole(@PathVariable Integer rid){
         if (roleService.removeById(rid)){
             return RespBean.success("删除成功");
@@ -56,13 +56,13 @@ public class PermissionController {
     }
 
     @ApiOperation(value = "查询所有的菜单")
-    @GetMapping("menus")
+    @GetMapping("/menus")
     public List<Menu> queryAllMenu(){
         return menuService.queryAllMenu();
     }
 
     @ApiOperation(value = "根据角色ID查询拥有的菜单ID")
-    @GetMapping("/{rid}")
+    @GetMapping("/mid/{rid}")
     public List<Integer> queryMenuByRoleId(@PathVariable Integer rid){
         return menuRoleService.list(new QueryWrapper<MenuRole>()
                 .eq("rid",rid))

@@ -41,6 +41,8 @@ public class MailTask {
             }
             mailLogService.update(new UpdateWrapper<MailLog>().set("count",mailLog.getCount()+1).set("updateTime",LocalDateTime.now()).set("tryTime",LocalDateTime.now().plusMinutes(MailContext.MSG_TIMEOUT)));
             Employee emp = employeeMapper.getEmp(mailLog.getEid()).get(0);
+            System.out.println("-------------------1--------------------------------");
+            System.out.println(emp);
             rabbitTemplate.convertAndSend(MailContext.MAIL_EXCHANGE_NAME,MailContext.MAIL_ROUTING_KEY_NAME,emp,new CorrelationData(mailLog.getMsgId()));
         });
     }

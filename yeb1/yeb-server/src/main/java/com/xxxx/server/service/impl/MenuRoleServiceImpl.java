@@ -26,8 +26,10 @@ public class MenuRoleServiceImpl extends ServiceImpl<MenuRoleMapper, MenuRole> i
 
     @Resource
     private MenuRoleMapper menuRoleMapper;
+
     /**
      * 更新角色菜单
+     *
      * @param rid
      * @param mids
      * @return
@@ -35,25 +37,16 @@ public class MenuRoleServiceImpl extends ServiceImpl<MenuRoleMapper, MenuRole> i
     @Override
     public RespBean updateRoleMenus(Integer rid, Integer[] mids) {
         //删除rid拥有的所有菜单
-        menuRoleMapper.delete(new QueryWrapper<MenuRole>().eq("rid",rid));
-        if (null == mids || 0 == mids.length){
+        menuRoleMapper.delete(new QueryWrapper<MenuRole>().eq("rid", rid));
+        if (null == mids || 0 == mids.length) {
             return RespBean.success("更新成功");
         }
-        menuRoleMapper.insertRecord(rid,mids);
-        return null;
+        Integer num = menuRoleMapper.insertRecord(rid, mids);
+        if (num == mids.length){
+            return RespBean.success("更新成功");
+        }
+            return RespBean.error("更新失败");
     }
 
-    @Override
-    @Transactional
-    public RespBean updateMenuRole(Integer rid, Integer[] mids) {
-        menuRoleMapper.delete(new QueryWrapper<MenuRole>().eq("rid",rid));
-        if (null==mids || 0 == mids.length){
-            return RespBean.success("更新成功");
-        }
-        Integer count = menuRoleMapper.insertRecord(rid, mids);
-        if(count==mids.length){
-            return RespBean.success("更新成功");
-        }
-        return RespBean.error("更新失败");
-    }
+
 }
